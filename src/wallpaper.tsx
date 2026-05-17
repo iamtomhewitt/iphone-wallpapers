@@ -20,7 +20,7 @@ export const handler = withErrorHandling(
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': 'image/jpeg',
+        'Content-Type': 'image/png',
       },
       body: Buffer.from(arrayBuffer).toString('base64'),
       isBase64Encoded: true,

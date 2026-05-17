@@ -11,9 +11,7 @@ provider:
   timeout: 30
   apiGateway:
     binaryMediaTypes:
-      - image/jpeg
-      - image/png
-      - text/html
+      - "*/*"
 
 package:
   patterns:
