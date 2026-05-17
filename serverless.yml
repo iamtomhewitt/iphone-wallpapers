@@ -9,6 +9,11 @@ provider:
   runtime: nodejs24.x
   stage: api
   timeout: 30
+  apiGateway:
+    binaryMediaTypes:
+      - image/jpeg
+      - image/png
+      - text/html
 
 package:
   patterns:
@@ -24,7 +29,7 @@ functions:
           cors: true
           method: get
           path: /wallpaper
-    handler: dist/src/wallpaper.handler
+    handler: dist/wallpaper.handler
     logRetentionInDays: 7
     name: iphone-wallpapers-wallpaper
     role:
