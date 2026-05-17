@@ -1,6 +1,8 @@
-const Comp = () => (
+const Comp = (props: any) => (
   <div style={{
-    color: 'red',
+    backgroundColor: 'red',
+    width: props.width,
+    height: props.height,
   }}>
     Hello world
   </div>

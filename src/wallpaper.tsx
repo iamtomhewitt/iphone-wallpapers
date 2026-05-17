@@ -7,7 +7,7 @@ export const handler = withErrorHandling(
   async () => {
     const { ImageResponse } = await import('@vercel/og');
 
-    const res = new ImageResponse(<Comp />, {
+    const res = new ImageResponse(<Comp height={2556} width={1179} />, {
       width: 1179,
       height: 2556,
     });
