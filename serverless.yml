@@ -27,7 +27,7 @@ functions:
           cors: true
           method: get
           path: /wallpaper
-    handler: dist/wallpaper.handler
+    handler: dist/generate-wallpaper.handler
     logRetentionInDays: 7
     name: iphone-wallpapers-wallpaper
     role:

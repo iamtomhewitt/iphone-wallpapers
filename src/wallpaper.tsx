@@ -1,31 +1,27 @@
-import { http } from '@iamtomhewitt/http';
-import { withErrorHandling } from '@iamtomhewitt/error';
+const Wallpaper = (props: any) => {
+  const randomColour = (() => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  })();
 
-import Comp from './comp';
+  return (
+    <div style={{
+      alignItems: 'center',
+      backgroundColor: randomColour,
+      display: 'flex',
+      fontSize: '40px',
+      height: '100%',
+      justifyContent: 'center',
+      width: '100%',
+    }}
+    >
+      Hello world!
+    </div>
+  );
+};
 
-export const handler = withErrorHandling(
-  async () => {
-    const { ImageResponse } = await import('@vercel/og');
-
-    const res = new ImageResponse(<Comp height={2556} width={1179} />, {
-      width: 1179,
-      height: 2556,
-    });
-
-    const arrayBuffer = await res.arrayBuffer();
-
-    console.log('byte length', arrayBuffer.byteLength);
-    console.log(Buffer.from(arrayBuffer).toString('base64'));
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'image/png',
-      },
-      body: Buffer.from(arrayBuffer).toString('base64'),
-      isBase64Encoded: true,
-    };
-  }, (err, code) => http.response.json(code, {
-    message: `${err.name}: ${err.message}`,
-  }),
-);
+export default Wallpaper;

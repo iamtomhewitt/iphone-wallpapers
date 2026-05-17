@@ -7,7 +7,8 @@
     "deploy": "sls deploy --aws-profile tom",
     "lint-fix": "iamtomhewitt-linter --sourceFolder=./ --type=typescript --fix",
     "prepare": "husky",
-    "release": "iamtomhewitt-releaser && npm run build && npm run deploy"
+    "release": "iamtomhewitt-releaser && npm run build && npm run deploy",
+    "start": "ts-node src/local.ts"
   },
   "dependencies": {
     "@iamtomhewitt/error": "3.1.0",
