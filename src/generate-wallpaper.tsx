@@ -2,7 +2,7 @@ import fs from 'fs';
 import { http } from '@iamtomhewitt/http';
 import { withErrorHandling } from '@iamtomhewitt/error';
 
-import Wallpaper from './Wallpaper';
+import Wallpaper from './wallpaper';
 
 export const handler = withErrorHandling(
   async () => {
