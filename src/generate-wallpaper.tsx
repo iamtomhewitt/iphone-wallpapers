@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { ImageResponseOptions } from '@vercel/og';
 import { http } from '@iamtomhewitt/http';
 import { withErrorHandling } from '@iamtomhewitt/error';
 
@@ -8,7 +9,7 @@ export const handler = withErrorHandling(
   async () => {
     const { ImageResponse } = await import('@vercel/og');
 
-    const imageOptions = {
+    const imageOptions: ImageResponseOptions = {
       height: 2556,
       width: 1179,
     };
@@ -31,7 +32,7 @@ export const handler = withErrorHandling(
   }, (err, code) => {
     console.log({
       err,
-      code, 
+      code,
     });
     return http.response.json(code, {
       message: `${err.name}: ${err.message}`,

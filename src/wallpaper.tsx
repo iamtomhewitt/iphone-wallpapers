@@ -3,6 +3,11 @@ import { getDayOfYear, getTotalDaysInCurrentYear } from './date';
 const Wallpaper = () => {
   const rowSize = 14;
   const numberOfDaysThisYear = getTotalDaysInCurrentYear();
+  const dayOfYear = getDayOfYear();
+  const daysRemaining = numberOfDaysThisYear - dayOfYear;
+  const daysRemainingPercentage = (((numberOfDaysThisYear - daysRemaining) / numberOfDaysThisYear) * 100).toFixed(1);
+
+  // gitlab contributions: https://gitlab.com/users/thewitt_wh/calendar.json
 
   const grid = (() => {
     const rows: number[][] = [];
@@ -51,9 +56,6 @@ const Wallpaper = () => {
               if (square === getDayOfYear()) {
                 border = '6px solid green';
               }
-              else if (square > getDayOfYear()) {
-                border = '6px solid #404040';
-              }
 
               return (
                 <div
@@ -72,6 +74,25 @@ const Wallpaper = () => {
             })}
           </div>
         ))}
+
+        <div style={{
+
+          margin: 'auto',
+          fontSize: '30px',
+          display: 'flex',
+        }}>
+          <span style={{
+            color: '#FF6B36',
+          }}>
+            {`${daysRemaining}`} days left
+          </span>
+
+          <span style={{
+            color: '#38373f',
+          }}>
+            {` - ${daysRemainingPercentage}`}%
+          </span>
+        </div>
       </div>
     </div>
   );
