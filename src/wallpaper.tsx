@@ -68,7 +68,7 @@ const Wallpaper = ({ contributions }: Props) => {
                 background = '#303570';
               }
               else if (contributionsForDate > 0) {
-                background = '#28272D';
+                background = '#312e3e';
               }
 
               if (dateOfSquare === '2026-10-26') {
