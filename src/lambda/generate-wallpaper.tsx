@@ -15,9 +15,15 @@ export const handler = withErrorHandling(
       width: 1179,
     };
 
-    const contributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'gitlab-contributions');
+    const gitlabContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'gitlab-contributions');
+    const githubContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'github-contributions');
 
-    const res = new ImageResponse(<Wallpaper contributions={contributions} />, imageOptions);
+    const mergedContributions = Object.fromEntries(
+      [...new Set([...Object.keys(gitlabContributions), ...Object.keys(githubContributions)])]
+        .map(key => [key, (gitlabContributions[key] || 0) + (githubContributions[key] || 0)]),
+    );
+
+    const res = new ImageResponse(<Wallpaper contributions={mergedContributions} />, imageOptions);
     const arrayBuffer = await res.arrayBuffer();
 
     if (process.env.USER && process.env.USER === 'thewitt') {
