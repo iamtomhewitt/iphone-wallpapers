@@ -12,9 +12,11 @@
     "release": "iamtomhewitt-releaser && npm run build && npm run deploy"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1049.0",
     "@iamtomhewitt/error": "3.1.0",
     "@iamtomhewitt/http": "3.1.0",
     "@vercel/og": "0.11.1",
+    "dotenv": "17.4.2",
     "react": "19.2.6"
   },
   "devDependencies": {
@@ -24,7 +26,7 @@
     "@iamtomhewitt/releaser": "3.1.0",
     "@tsconfig/node24": "24.0.4",
     "@types/node": "25.2.3",
-    "@types/react": "^19.2.14",
+    "@types/react": "19.2.14",
     "husky": "9.1.7",
     "serverless": "3.4",
     "ts-node": "10.9.2",

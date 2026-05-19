@@ -35,6 +35,21 @@ functions:
         - LambdaRole
         - Arn
 
+  contributions:
+    description: Scrapes Gitlab/Github for contributions, and saves them to a S3 bucket
+    handler: dist/lambda/get-contributions.handler
+    logRetentionInDays: 7
+    name: iphone-wallpapers-get-contributions
+    timeout: 600
+    events:
+      - schedule: rate(6 hours)
+    environment:
+      GITLAB_TOKEN: ${env:GITLAB_TOKEN}
+    role:
+      Fn::GetAtt:
+        - LambdaRole
+        - Arn
+
 resources:
   Resources:
     LambdaRole:
@@ -50,6 +65,18 @@ resources:
           - PolicyDocument:
               Statement:
                 - Action:
+                    - s3:PutObject
+                    - s3:GetObject
+                    - s3:DeleteObject
+                  Effect: Allow
+                  Resource:
+                    - arn:aws:s3:::iphone-wallpapers-data/*
+                - Action:
+                    - s3:ListBucket
+                  Effect: Allow
+                  Resource:
+                    - arn:aws:s3:::iphone-wallpapers-data
+                - Action:
                     - logs:CreateLogGroup
                     - logs:CreateLogStream
                     - logs:PutLogEvents
@@ -59,3 +86,13 @@ resources:
             PolicyName: IPhoneWallPapersLambdaPolicy
         RoleName: iphone-wallpapers-lambda-role
       Type: AWS::IAM::Role
+    
+    DataBucket:
+      Properties:
+        BucketName: iphone-wallpapers-data
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+      Type: AWS::S3::Bucket
