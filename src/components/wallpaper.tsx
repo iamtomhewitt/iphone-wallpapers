@@ -1,4 +1,4 @@
-import { dayOfYearToDate, getDayOfYear, getTotalDaysInCurrentYear } from './date';
+import { dayOfYearToDate, getDayOfYear, getTotalDaysInCurrentYear } from '../lib/date';
 
 const Wallpaper = ({ contributions }: Props) => {
   const rowSize = 14;

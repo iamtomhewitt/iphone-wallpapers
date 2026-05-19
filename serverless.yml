@@ -21,7 +21,7 @@ package:
 
 functions:
   wallpaper:
-    description: Generate wallpaper image for iPhone
+    description: Generates a wallpaper image for iPhone
     events:
       - http:
           cors: true
@@ -29,7 +29,7 @@ functions:
           path: /wallpaper
     handler: dist/generate-wallpaper.handler
     logRetentionInDays: 7
-    name: iphone-wallpapers-wallpaper
+    name: iphone-wallpapers-generate-wallpaper
     role:
       Fn::GetAtt:
         - LambdaRole
