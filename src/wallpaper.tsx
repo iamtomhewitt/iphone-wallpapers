@@ -106,7 +106,7 @@ const Wallpaper = ({ contributions }: Props) => {
           <span style={{
             color: '#FF6B36',
           }}>
-            {`${daysRemaining}`} days left
+            {`${daysRemaining}`} days left of {new Date().getFullYear()}
           </span>
         </div>
       </div>
