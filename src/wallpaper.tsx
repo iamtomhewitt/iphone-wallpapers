@@ -98,7 +98,6 @@ const Wallpaper = ({ contributions }: Props) => {
         ))}
 
         <div style={{
-
           margin: 'auto',
           fontSize: '30px',
           display: 'flex',
@@ -108,6 +107,15 @@ const Wallpaper = ({ contributions }: Props) => {
           }}>
             {`${daysRemaining}`} days left of {new Date().getFullYear()}
           </span>
+        </div>
+
+        <div style={{
+          margin: 'auto',
+          color: '#6d6d6d',
+          fontSize: '20px',
+          display: 'flex', 
+        }}>
+          Generated on {new Date().toTimeString().split('GMT')[0].trim()}
         </div>
       </div>
     </div>
