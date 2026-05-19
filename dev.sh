@@ -1,5 +1,5 @@
 while [ 1 ]
 do
-  npm start
+  ts-node ./src/local.ts
   sleep 5s
 done

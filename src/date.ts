@@ -12,3 +12,12 @@ export const getDayOfYear = () => {
   const day = Math.floor(diff / oneDay);
   return day;
 };
+
+/**
+ * Passing `1` will give `2026-01-01T00:00:00.000Z`
+ */
+export const dayOfYearToDate = (day: number, year = new Date().getFullYear()) => {
+  const date = new Date(year, 0);
+  date.setDate(day);
+  return date;
+};

@@ -1,13 +1,11 @@
-import { getDayOfYear, getTotalDaysInCurrentYear } from './date';
+import { dayOfYearToDate, getDayOfYear, getTotalDaysInCurrentYear } from './date';
 
-const Wallpaper = () => {
+const Wallpaper = ({ contributions }: Props) => {
   const rowSize = 14;
   const numberOfDaysThisYear = getTotalDaysInCurrentYear();
   const dayOfYear = getDayOfYear();
   const daysRemaining = numberOfDaysThisYear - dayOfYear;
-  const daysRemainingPercentage = (((numberOfDaysThisYear - daysRemaining) / numberOfDaysThisYear) * 100).toFixed(1);
-
-  // gitlab contributions: https://gitlab.com/users/thewitt_wh/calendar.json
+  const daysRemainingPercentage = (100 - (((numberOfDaysThisYear - daysRemaining) / numberOfDaysThisYear) * 100)).toFixed(1);
 
   const grid = (() => {
     const rows: number[][] = [];
@@ -51,17 +49,37 @@ const Wallpaper = () => {
             }}
           >
             {row.map((square) => {
+              // TODO this would probs be better a a `Cell` component or something
+              let background = '#28272D';
               let border = 'none';
+              const dateOfSquare = dayOfYearToDate(square + 1).toISOString().split('T')[0];
+              const contributionsForDate = contributions[dateOfSquare] || 0;
 
               if (square === getDayOfYear()) {
-                border = '6px solid green';
+                border = '6px solid #5cb85c';
+              }
+
+              if (contributionsForDate > 50) {
+                background = '#D2DCFF';
+              }
+              else if (contributionsForDate > 40) {
+                background = '#7992F5';
+              }
+              else if (contributionsForDate > 30) {
+                background = '#4E65CD';
+              }
+              else if (contributionsForDate > 20) {
+                background = '#303570';
+              }
+              else if (contributionsForDate > 0) {
+                background = '#28272D';
               }
 
               return (
                 <div
                   key={square}
                   style={{
-                    background: '#28272D',
+                    background,
                     border,
                     borderRadius: '30%',
                     display: 'flex',
@@ -86,16 +104,14 @@ const Wallpaper = () => {
           }}>
             {`${daysRemaining}`} days left
           </span>
-
-          <span style={{
-            color: '#38373f',
-          }}>
-            {` - ${daysRemainingPercentage}`}%
-          </span>
         </div>
       </div>
     </div>
   );
 };
+
+type Props = {
+  contributions: Record<string, number>
+}
 
 export default Wallpaper;

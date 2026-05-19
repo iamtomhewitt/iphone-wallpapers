@@ -4,11 +4,12 @@
   "author": "Tom Hewitt",
   "scripts": {
     "build": "rm -rf dist && tsc -b && cp package.json dist/package.json && cd dist && npm i --omit=dev",
+    "dev": "./dev.sh",
     "deploy": "sls deploy --aws-profile tom",
+    "generate-wallpaper": "ts-node src/local.ts",
     "lint-fix": "iamtomhewitt-linter --sourceFolder=./ --type=typescript --fix",
     "prepare": "husky",
-    "release": "iamtomhewitt-releaser && npm run build && npm run deploy",
-    "start": "ts-node src/local.ts"
+    "release": "iamtomhewitt-releaser && npm run build && npm run deploy"
   },
   "dependencies": {
     "@iamtomhewitt/error": "3.1.0",
