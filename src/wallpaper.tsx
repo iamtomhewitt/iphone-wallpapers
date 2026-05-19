@@ -55,14 +55,6 @@ const Wallpaper = ({ contributions }: Props) => {
               const dateOfSquare = dayOfYearToDate(square + 1).toISOString().split('T')[0];
               const contributionsForDate = contributions[dateOfSquare] || 0;
 
-              if (dateOfSquare === '2026-10-26') {
-                border = '6px solid #009DC4';
-                background = '#009DC4';
-              }
-              else if (square === getDayOfYear()) {
-                border = '6px solid #5cb85c';
-              }
-
               if (contributionsForDate > 50) {
                 background = '#D2DCFF';
               }
@@ -77,6 +69,15 @@ const Wallpaper = ({ contributions }: Props) => {
               }
               else if (contributionsForDate > 0) {
                 background = '#28272D';
+              }
+
+              if (dateOfSquare === '2026-10-26') {
+                border = '6px solid #FF6B36';
+                background = '#FF6B36';
+              }
+              else if (square === getDayOfYear()) {
+                border = '2px solid #5cb85c';
+                background = '#5cb85c';
               }
 
               return (
@@ -113,9 +114,9 @@ const Wallpaper = ({ contributions }: Props) => {
           margin: 'auto',
           color: '#6d6d6d',
           fontSize: '20px',
-          display: 'flex', 
+          display: 'flex',
         }}>
-          Generated on {new Date().toTimeString().split('GMT')[0].trim()}
+          Generated at {new Date().toTimeString().split('GMT')[0].trim()}
         </div>
       </div>
     </div>

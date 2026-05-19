@@ -5,6 +5,7 @@ const gitlabHeaders = {
 
 const getContributions = async (username: string, queryParameters = {}) => {
   return {
+    '2026-05-19': 55,
     '2026-05-18': 62,
     '2026-05-16': 7,
     '2026-05-15': 24,
@@ -117,7 +118,7 @@ const getContributions = async (username: string, queryParameters = {}) => {
 
     const url = `https://gitlab.com/api/v4/users/${username}/events?${queryParametersString}&per_page=${perPage}&page=${page}`;
     const data = await fetch(url, {
-      headers: gitlabHeaders, 
+      headers: gitlabHeaders,
     })
       .then(x => x.json()) as any[];
 
