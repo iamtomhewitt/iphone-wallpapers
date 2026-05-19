@@ -79,6 +79,9 @@ const Wallpaper = ({ contributions }: Props) => {
                 border = '2px solid #5cb85c';
                 background = '#5cb85c';
               }
+              else if (square > getDayOfYear()) {
+                background = '#1f1f1f';
+              }
 
               return (
                 <div
