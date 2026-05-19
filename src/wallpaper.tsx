@@ -55,7 +55,11 @@ const Wallpaper = ({ contributions }: Props) => {
               const dateOfSquare = dayOfYearToDate(square + 1).toISOString().split('T')[0];
               const contributionsForDate = contributions[dateOfSquare] || 0;
 
-              if (square === getDayOfYear()) {
+              if (dateOfSquare === '2026-10-26') {
+                border = '6px solid #009DC4';
+                background = '#009DC4';
+              }
+              else if (square === getDayOfYear()) {
                 border = '6px solid #5cb85c';
               }
 
