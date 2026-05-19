@@ -3,8 +3,8 @@ import { ImageResponseOptions } from '@vercel/og';
 import { http } from '@iamtomhewitt/http';
 import { withErrorHandling } from '@iamtomhewitt/error';
 
-import Wallpaper from './components/wallpaper';
-import { gitlab } from './lib/gitlab';
+import Wallpaper from '../components/wallpaper';
+import { gitlab } from '../lib/gitlab';
 
 export const handler = withErrorHandling(
   async () => {

@@ -1,4 +1,4 @@
-import { handler } from './generate-wallpaper';
+import { handler } from './lambda/generate-wallpaper';
 
 (async () => {
   handler(null)
