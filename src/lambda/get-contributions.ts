@@ -117,9 +117,9 @@ export const handler = withErrorHandling(
         .map(key => [key, (githubContributions[key] || 0) + (currentGithubContributions[key] || 0)]),
     );
 
-    console.log('There are', Object.keys(currentGitlabContributions), 'items for current Gitlab contributions');
-    console.log('Found', Object.keys(gitlabContributions), 'items from Gitlab API');
-    console.log('Saving', Object.keys(newGitlabContributions), 'items for Gitlab to S3');
+    console.log('There are', Object.keys(currentGitlabContributions).length, 'items for current Gitlab contributions');
+    console.log('Found', Object.keys(gitlabContributions).length, 'items from Gitlab API');
+    console.log('Saving', Object.keys(newGitlabContributions).length, 'items for Gitlab to S3');
 
     await s3.save('iphone-wallpapers-data', 'github-contributions', JSON.stringify(newGithubContributions));
     await s3.save('iphone-wallpapers-data', 'gitlab-contributions', JSON.stringify(newGitlabContributions));

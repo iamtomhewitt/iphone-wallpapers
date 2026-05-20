@@ -44,6 +44,7 @@ functions:
     events:
       - schedule: rate(6 hours)
     environment:
+      GITHUB_TOKEN: ${env:GITHUB_TOKEN}
       GITLAB_TOKEN: ${env:GITLAB_TOKEN}
     role:
       Fn::GetAtt:
