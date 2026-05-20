@@ -104,11 +104,25 @@ export const handler = withErrorHandling(
       return contributions;
     };
 
+    const currentGitlabContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'gitlab-contributions');
+    const currentGithubContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'github-contributions');
     const githubContributions = await getGithubContributions('iamtomhewitt');
     const gitlabContributions = await getGitlabContributions('thewitt_wh');
+    const newGitlabContributions = Object.fromEntries(
+      [...new Set([...Object.keys(gitlabContributions), ...Object.keys(currentGitlabContributions)])]
+        .map(key => [key, (gitlabContributions[key] || 0) + (currentGitlabContributions[key] || 0)]),
+    );
+    const newGithubContributions = Object.fromEntries(
+      [...new Set([...Object.keys(githubContributions), ...Object.keys(currentGithubContributions)])]
+        .map(key => [key, (githubContributions[key] || 0) + (currentGithubContributions[key] || 0)]),
+    );
 
-    await s3.save('iphone-wallpapers-data', 'github-contributions', JSON.stringify(githubContributions));
-    await s3.save('iphone-wallpapers-data', 'gitlab-contributions', JSON.stringify(gitlabContributions));
+    console.log('There are', Object.keys(currentGitlabContributions), 'items for current Gitlab contributions');
+    console.log('Found', Object.keys(gitlabContributions), 'items from Gitlab API');
+    console.log('Saving', Object.keys(newGitlabContributions), 'items for Gitlab to S3');
+
+    await s3.save('iphone-wallpapers-data', 'github-contributions', JSON.stringify(newGithubContributions));
+    await s3.save('iphone-wallpapers-data', 'gitlab-contributions', JSON.stringify(newGitlabContributions));
 
     const seconds = (new Date().getTime() - now.getTime()) / 1000;
     console.log(`Contributions saved in ${seconds} seconds`);
