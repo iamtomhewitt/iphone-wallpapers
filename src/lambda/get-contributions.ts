@@ -4,13 +4,21 @@ import s3 from '../lib/s3';
 
 export const handler = withErrorHandling(
   async () => {
-    const getGitlabContributions = async (username: string, queryParameters = {}) => {
+    const now = new Date();
+
+    const getGitlabContributions = async (username: string) => {
       const perPage = 100;
+      const after = new Date();
+      after.setDate(after.getDate() - 7);
+      after.setHours(0, 0, 0);
+
       let page = 1;
       let all: any[] = [];
 
       while (true) {
-        const queryParametersString = Object.entries(queryParameters)
+        const queryParametersString = Object.entries({
+          after: after.toISOString(),
+        })
           .map(([key, value]) => `${key}=${value}`)
           .join('&');
 
@@ -96,17 +104,13 @@ export const handler = withErrorHandling(
       return contributions;
     };
 
-    const start = new Date();
-    const thisYear = start.getFullYear();
     const githubContributions = await getGithubContributions('iamtomhewitt');
-    const gitlabContributions = await getGitlabContributions('thewitt_wh', {
-      after: `${thisYear}-01-01T00:00:00.000Z`,
-    });
+    const gitlabContributions = await getGitlabContributions('thewitt_wh');
 
     await s3.save('iphone-wallpapers-data', 'github-contributions', JSON.stringify(githubContributions));
     await s3.save('iphone-wallpapers-data', 'gitlab-contributions', JSON.stringify(gitlabContributions));
 
-    const seconds = (new Date().getTime() - start.getTime()) / 1000;
+    const seconds = (new Date().getTime() - now.getTime()) / 1000;
     console.log(`Contributions saved in ${seconds} seconds`);
   },
   (err, code) => {
