@@ -1,6 +1,6 @@
 {
   "name": "iphone-wallpapers",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Tom Hewitt",
   "scripts": {
     "build": "rm -rf dist && tsc -b && cp package.json dist/package.json && cd dist && npm i --omit=dev",
