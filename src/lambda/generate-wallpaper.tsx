@@ -5,6 +5,7 @@ import { withErrorHandling } from '@iamtomhewitt/error';
 
 import Wallpaper from '../components/wallpaper';
 import s3 from '../lib/s3';
+import { merge } from '../lib/object';
 
 export const handler = withErrorHandling(
   async () => {
@@ -17,11 +18,7 @@ export const handler = withErrorHandling(
 
     const gitlabContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'gitlab-contributions');
     const githubContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'github-contributions');
-
-    const mergedContributions = Object.fromEntries(
-      [...new Set([...Object.keys(gitlabContributions), ...Object.keys(githubContributions)])]
-        .map(key => [key, (gitlabContributions[key] || 0) + (githubContributions[key] || 0)]),
-    );
+    const mergedContributions = merge(gitlabContributions, githubContributions);
 
     const res = new ImageResponse(<Wallpaper contributions={mergedContributions} />, imageOptions);
     const arrayBuffer = await res.arrayBuffer();

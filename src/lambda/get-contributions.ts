@@ -1,6 +1,7 @@
 import { withErrorHandling } from '@iamtomhewitt/error';
 
 import s3 from '../lib/s3';
+import { merge } from '../lib/object';
 
 export const handler = withErrorHandling(
   async () => {
@@ -104,22 +105,23 @@ export const handler = withErrorHandling(
       return contributions;
     };
 
-    const currentGitlabContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'gitlab-contributions');
-    const currentGithubContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'github-contributions');
-    const githubContributions = await getGithubContributions('iamtomhewitt');
-    const gitlabContributions = await getGitlabContributions('thewitt_wh');
-    const newGitlabContributions = Object.fromEntries(
-      [...new Set([...Object.keys(gitlabContributions), ...Object.keys(currentGitlabContributions)])]
-        .map(key => [key, (gitlabContributions[key] || 0) + (currentGitlabContributions[key] || 0)]),
-    );
-    const newGithubContributions = Object.fromEntries(
-      [...new Set([...Object.keys(githubContributions), ...Object.keys(currentGithubContributions)])]
-        .map(key => [key, (githubContributions[key] || 0) + (currentGithubContributions[key] || 0)]),
-    );
+    const getContributions = async (type: 'github' | 'gitlab', username: string) => {
+      const current = await s3.getObjectAsJson('iphone-wallpapers-data', `${type}-contributions`);
+      console.log('There are', Object.keys(current).length, 'items for current', type, 'contributions');
 
-    console.log('There are', Object.keys(currentGitlabContributions).length, 'items for current Gitlab contributions');
-    console.log('Found', Object.keys(gitlabContributions).length, 'items from Gitlab API');
-    console.log('Saving', Object.keys(newGitlabContributions).length, 'items for Gitlab to S3');
+      const fetched = type === 'github' ?
+        await getGithubContributions(username) :
+        await getGitlabContributions(username);
+      console.log('Found', Object.keys(fetched).length, 'items from', type, 'API');
+
+      const merged = merge(current, fetched);
+      console.log('Merged into', Object.keys(merged).length, 'items for', type, 'to S3');
+
+      return merged;
+    };
+
+    const newGithubContributions = await getContributions('github', 'iamtomhewitt');
+    const newGitlabContributions = await getContributions('gitlab', 'thewitt_wh');
 
     await s3.save('iphone-wallpapers-data', 'github-contributions', JSON.stringify(newGithubContributions));
     await s3.save('iphone-wallpapers-data', 'gitlab-contributions', JSON.stringify(newGitlabContributions));
