@@ -1,3 +1,4 @@
+import Square from './square';
 import { dayOfYearToDate, getDayOfYear, getTotalDaysInCurrentYear } from '../lib/date';
 
 const Wallpaper = ({ contributions }: Props) => {
@@ -5,7 +6,6 @@ const Wallpaper = ({ contributions }: Props) => {
   const numberOfDaysThisYear = getTotalDaysInCurrentYear();
   const dayOfYear = getDayOfYear();
   const daysRemaining = numberOfDaysThisYear - dayOfYear;
-  const daysRemainingPercentage = (100 - (((numberOfDaysThisYear - daysRemaining) / numberOfDaysThisYear) * 100)).toFixed(1);
 
   const grid = (() => {
     const rows: number[][] = [];
@@ -49,54 +49,9 @@ const Wallpaper = ({ contributions }: Props) => {
             }}
           >
             {row.map((square) => {
-              // TODO this would probs be better a a `Cell` component or something
-              let background = '#28272D';
-              let border = 'none';
               const dateOfSquare = dayOfYearToDate(square + 1).toISOString().split('T')[0];
               const contributionsForDate = contributions[dateOfSquare] || 0;
-
-              if (contributionsForDate > 50) {
-                background = '#D2DCFF';
-              }
-              else if (contributionsForDate > 40) {
-                background = '#7992F5';
-              }
-              else if (contributionsForDate > 30) {
-                background = '#4E65CD';
-              }
-              else if (contributionsForDate > 20) {
-                background = '#303570';
-              }
-              else if (contributionsForDate > 0) {
-                background = '#312e3e';
-              }
-
-              if (dateOfSquare === '2026-10-26') {
-                border = '6px solid #FF6B36';
-                background = '#FF6B36';
-              }
-              else if (square === getDayOfYear()) {
-                border = '2px solid #5cb85c';
-                background = '#5cb85c';
-              }
-              else if (square > getDayOfYear()) {
-                background = '#1f1f1f';
-              }
-
-              return (
-                <div
-                  key={square}
-                  style={{
-                    background,
-                    border,
-                    borderRadius: '30%',
-                    display: 'flex',
-                    height: '35px',
-                    margin: '8px',
-                    width: '35px',
-                  }}
-                />
-              );
+              return <Square contributions={contributionsForDate} squareNumber={square} />;
             })}
           </div>
         ))}
