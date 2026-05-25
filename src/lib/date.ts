@@ -21,3 +21,22 @@ export const dayOfYearToDate = (day: number, year = new Date().getFullYear()) =>
   date.setDate(day);
   return date;
 };
+
+export const getFirstDayOfYear = (): DayKey => {
+  return new Date(`${new Date().getFullYear()}-01-01`)
+    .toDateString()
+    .toLowerCase()
+    .split(' ')[0] as DayKey;
+};
+
+export const dayKeyToNumber = (key: DayKey) => {
+  const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  return days.indexOf(key);
+};
+
+export const dayNumberToDate = (dayNumber: number) => {
+  const [month, day, year] = dayOfYearToDate(dayNumber).toLocaleDateString().split('/');
+  return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+};
+
+type DayKey = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';

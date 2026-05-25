@@ -1,8 +1,13 @@
-import { dayOfYearToDate, getDayOfYear } from '../lib/date';
+import { dayNumberToDate, getDayOfYear } from '../lib/date';
 
 const Square = ({ contributions = 0, squareNumber = 0 }: Props) => {
-  const dateOfSquare = dayOfYearToDate(squareNumber + 1).toISOString().split('T')[0];
+  const dateOfSquare = dayNumberToDate(squareNumber);
   const dayOfYear = getDayOfYear();
+  const isToday = squareNumber === dayOfYear;
+  const isFuture = squareNumber > dayOfYear;
+  const isPast = squareNumber <= 0;
+  const isBirthday = dateOfSquare === '2026-10-26';
+
   const { background, border } = (() => {
     let background = '#28272D';
     let border = 'none';
@@ -23,23 +28,37 @@ const Square = ({ contributions = 0, squareNumber = 0 }: Props) => {
       background = '#312e3e';
     }
 
-    if (dateOfSquare === '2026-10-26') {
+    if (isBirthday) {
       border = '6px solid #FF6B36';
       background = '#FF6B36';
     }
-    else if (squareNumber === dayOfYear) {
+    else if (isToday) {
       border = '2px solid #5cb85c';
       background = '#5cb85c';
     }
-    else if (squareNumber > dayOfYear) {
+    else if (isFuture) {
       background = '#1f1f1f';
     }
 
     return {
       background,
-      border, 
+      border,
     };
   })();
+
+  if (isPast) {
+    return <div
+      style={{
+        background: 'transparent',
+        border,
+        borderRadius: '30%',
+        display: 'flex',
+        height: '35px',
+        margin: '8px',
+        width: '35px',
+      }}
+    />;
+  }
 
   return (
     <div

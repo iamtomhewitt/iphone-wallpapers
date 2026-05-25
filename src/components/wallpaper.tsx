@@ -1,16 +1,17 @@
 import Square from './square';
-import { dayOfYearToDate, getDayOfYear, getTotalDaysInCurrentYear } from '../lib/date';
+import { dayKeyToNumber, dayNumberToDate, getDayOfYear, getFirstDayOfYear, getTotalDaysInCurrentYear } from '../lib/date';
 
 const Wallpaper = ({ contributions }: Props) => {
-  const rowSize = 14;
   const numberOfDaysThisYear = getTotalDaysInCurrentYear();
   const dayOfYear = getDayOfYear();
+  const numberOfDaysBeforeYearStarts = dayKeyToNumber(getFirstDayOfYear());
+  const rowSize = 14;
   const daysRemaining = numberOfDaysThisYear - dayOfYear;
 
   const grid = (() => {
     const rows: number[][] = [];
 
-    for (let i = 0; i < numberOfDaysThisYear; i += rowSize) {
+    for (let i = -numberOfDaysBeforeYearStarts; i < numberOfDaysThisYear + numberOfDaysBeforeYearStarts; i += rowSize) {
       const row: number[] = [];
 
       for (let j = i; j < i + rowSize && j < numberOfDaysThisYear; j++) {
@@ -49,10 +50,9 @@ const Wallpaper = ({ contributions }: Props) => {
             }}
           >
             {row.map((square) => {
-              const [month, day, year] = dayOfYearToDate(square + 1).toLocaleDateString().split('/')
-              const lookupDateKey = [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-')
+              const lookupDateKey = dayNumberToDate(square + 1);
               const contributionsForDate = contributions[lookupDateKey] || 0;
-              return <Square contributions={contributionsForDate} squareNumber={square} />;
+              return <Square contributions={contributionsForDate} squareNumber={square + 1} />;
             })}
           </div>
         ))}
@@ -83,7 +83,7 @@ const Wallpaper = ({ contributions }: Props) => {
 };
 
 type Props = {
-  contributions: Record<string, number>
+  contributions: Record<string, number>;
 }
 
 export default Wallpaper;
