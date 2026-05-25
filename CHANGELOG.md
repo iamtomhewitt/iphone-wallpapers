@@ -1,3 +1,8 @@
+## Version 1.0.1
+Released **25th May 2026 08:49:48pm** - *2 commits*
+- 1065c93 fix: fix generated date time string
+- c5e3aff fix: correct date parsing for contribution lookup
+
 ## Version 1.0.0
 Released **24th May 2026 08:04:21pm** - *26 commits*
 - e7d0560 feat: make it official!
@@ -27,4 +32,4 @@ Released **24th May 2026 08:04:21pm** - *26 commits*
 - a79d1bb first pass as a lambda
 - 1d4761f chore: .gitignore
 
- 
+  
