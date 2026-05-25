@@ -75,7 +75,7 @@ const Wallpaper = ({ contributions }: Props) => {
           fontSize: '20px',
           display: 'flex',
         }}>
-          Generated at {new Date().toTimeString().split('GMT')[0].trim()}
+          Generated at {new Date().toLocaleTimeString().split('GMT')[0].trim().toLowerCase().replace(' ', '')}
         </div>
       </div>
     </div>
