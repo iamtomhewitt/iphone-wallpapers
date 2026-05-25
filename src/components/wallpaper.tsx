@@ -49,8 +49,9 @@ const Wallpaper = ({ contributions }: Props) => {
             }}
           >
             {row.map((square) => {
-              const dateOfSquare = dayOfYearToDate(square + 1).toISOString().split('T')[0];
-              const contributionsForDate = contributions[dateOfSquare] || 0;
+              const [month, day, year] = dayOfYearToDate(square + 1).toLocaleDateString().split('/')
+              const lookupDateKey = [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-')
+              const contributionsForDate = contributions[lookupDateKey] || 0;
               return <Square contributions={contributionsForDate} squareNumber={square} />;
             })}
           </div>
