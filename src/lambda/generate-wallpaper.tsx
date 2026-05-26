@@ -5,6 +5,7 @@ import { withErrorHandling } from '@iamtomhewitt/error';
 
 import Wallpaper from '../components/wallpaper';
 import s3 from '../lib/s3';
+import { getTimeData } from '../lib/date';
 import { merge } from '../lib/object';
 
 export const handler = withErrorHandling(
@@ -19,8 +20,9 @@ export const handler = withErrorHandling(
     const gitlabContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'gitlab-contributions');
     const githubContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'github-contributions');
     const mergedContributions = merge(gitlabContributions, githubContributions);
+    const timeData = await getTimeData();
 
-    const res = new ImageResponse(<Wallpaper contributions={mergedContributions} />, imageOptions);
+    const res = new ImageResponse(<Wallpaper timeData={timeData} contributions={mergedContributions} />, imageOptions);
     const arrayBuffer = await res.arrayBuffer();
 
     if (process.env.USER && process.env.USER === 'thewitt') {

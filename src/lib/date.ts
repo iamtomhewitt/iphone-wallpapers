@@ -4,15 +4,6 @@ export const getTotalDaysInCurrentYear = () => {
   return isLeapYear ? 366 : 365;
 };
 
-export const getDayOfYear = () => {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0);
-  const diff = (now.getTime() - start.getTime()) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
-  const oneDay = 1000 * 60 * 60 * 24;
-  const day = Math.floor(diff / oneDay);
-  return day;
-};
-
 /**
  * Passing `1` will give `2026-01-01T00:00:00.000Z`
  */
@@ -37,6 +28,11 @@ export const dayKeyToNumber = (key: DayKey) => {
 export const dayNumberToDate = (dayNumber: number) => {
   const [month, day, year] = dayOfYearToDate(dayNumber).toLocaleDateString().split('/');
   return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+};
+
+export const getTimeData = async () => {
+  return await fetch('https://time.now/developer/api/timezone/Europe/London')
+    .then((response: any) => response.json());
 };
 
 type DayKey = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';

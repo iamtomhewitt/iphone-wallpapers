@@ -1,9 +1,9 @@
 import Square from './square';
-import { dayKeyToNumber, dayNumberToDate, getDayOfYear, getFirstDayOfYear, getTotalDaysInCurrentYear } from '../lib/date';
+import { dayKeyToNumber, dayNumberToDate, getFirstDayOfYear, getTotalDaysInCurrentYear } from '../lib/date';
 
-const Wallpaper = ({ contributions }: Props) => {
+const Wallpaper = ({ contributions, timeData }: Props) => {
   const numberOfDaysThisYear = getTotalDaysInCurrentYear();
-  const dayOfYear = getDayOfYear();
+  const dayOfYear = timeData.day_of_year;
   const numberOfDaysBeforeYearStarts = dayKeyToNumber(getFirstDayOfYear());
   const rowSize = 14;
   const daysRemaining = numberOfDaysThisYear - dayOfYear;
@@ -52,7 +52,13 @@ const Wallpaper = ({ contributions }: Props) => {
             {row.map((square) => {
               const lookupDateKey = dayNumberToDate(square + 1);
               const contributionsForDate = contributions[lookupDateKey] || 0;
-              return <Square contributions={contributionsForDate} squareNumber={square + 1} />;
+              return (
+                <Square
+                  contributions={contributionsForDate}
+                  dayOfYear={dayOfYear}
+                  squareNumber={square + 1}
+                />
+              );
             })}
           </div>
         ))}
@@ -75,7 +81,7 @@ const Wallpaper = ({ contributions }: Props) => {
           fontSize: '20px',
           display: 'flex',
         }}>
-          Generated at {new Date().toLocaleTimeString().split('GMT')[0].trim().toLowerCase().replace(' ', '')}
+          Generated at {timeData.datetime.substring(11, 16)}
         </div>
       </div>
     </div>
@@ -84,6 +90,23 @@ const Wallpaper = ({ contributions }: Props) => {
 
 type Props = {
   contributions: Record<string, number>;
+  timeData: {
+    abbreviation: string;
+    client_ip: string;
+    datetime: string;
+    day_of_week: number;
+    day_of_year: number;
+    dst: boolean;
+    dst_from: string;
+    dst_offset: number;
+    dst_until: string;
+    raw_offset: number;
+    timezone: string;
+    unixtime: number;
+    utc_datetime: string;
+    utc_offset: string;
+    week_number: number;
+  };
 }
 
 export default Wallpaper;

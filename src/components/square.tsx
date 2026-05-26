@@ -1,8 +1,7 @@
-import { dayNumberToDate, getDayOfYear } from '../lib/date';
+import { dayNumberToDate } from '../lib/date';
 
-const Square = ({ contributions = 0, squareNumber = 0 }: Props) => {
+const Square = ({ contributions = 0, dayOfYear = 0, squareNumber = 0 }: Props) => {
   const dateOfSquare = dayNumberToDate(squareNumber);
-  const dayOfYear = getDayOfYear();
   const isToday = squareNumber === dayOfYear;
   const isFuture = squareNumber > dayOfYear;
   const isPast = squareNumber <= 0;
@@ -77,6 +76,7 @@ const Square = ({ contributions = 0, squareNumber = 0 }: Props) => {
 
 type Props = {
   contributions: number;
+  dayOfYear: number;
   squareNumber: number;
 }
 
