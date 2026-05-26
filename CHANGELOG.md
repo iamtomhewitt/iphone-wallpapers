@@ -1,3 +1,8 @@
+## Version 2.0.0
+Released **26th May 2026 08:29:19pm** - *2 commits*
+- df13abf fix: use time.now api because I hate javascript dates
+- af16d79 feat: start grid on the day the year started, and offset
+
 ## Version 1.0.1
 Released **25th May 2026 08:49:48pm** - *2 commits*
 - 1065c93 fix: fix generated date time string
@@ -32,4 +37,4 @@ Released **24th May 2026 08:04:21pm** - *26 commits*
 - a79d1bb first pass as a lambda
 - 1d4761f chore: .gitignore
 
-  
+   
