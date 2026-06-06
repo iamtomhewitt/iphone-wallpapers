@@ -1,3 +1,8 @@
+## Version 2.1.0
+Released **6th Jun 2026 04:18:50pm** - *2 commits*
+- 4d45749 style: split into two columns to show weeks
+- 62e6952 chore: update packages
+
 ## Version 2.0.0
 Released **26th May 2026 08:29:19pm** - *2 commits*
 - df13abf fix: use time.now api because I hate javascript dates
@@ -37,4 +42,4 @@ Released **24th May 2026 08:04:21pm** - *26 commits*
 - a79d1bb first pass as a lambda
 - 1d4761f chore: .gitignore
 
-   
+    
