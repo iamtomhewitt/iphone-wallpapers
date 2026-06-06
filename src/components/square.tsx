@@ -6,10 +6,19 @@ const Square = ({ contributions = 0, dayOfYear = 0, squareNumber = 0 }: Props) =
   const isFuture = squareNumber > dayOfYear;
   const isPast = squareNumber <= 0;
   const isBirthday = dateOfSquare === '2026-10-26';
+  const isSecondMonday = (() => {
+    // 1970-01-05 is a known Monday (UTC)
+    const anchorMonday = new Date('1970-01-05T00:00:00Z');
+    const date = new Date(`${dateOfSquare}T00:00:00Z`);
+    const isMonday = date.getUTCDay() === 1;
+    const diffInDays = Math.floor((date.getTime() - anchorMonday.getTime()) / (1000 * 60 * 60 * 24));
+    return isMonday && (Math.floor(diffInDays / 7) % 2 === 0);
+  })();
 
-  const { background, border } = (() => {
+  const css = (() => {
     let background = '#28272D';
     let border = 'none';
+    let margin = '8px';
 
     if (contributions > 50) {
       background = '#D2DCFF';
@@ -39,21 +48,26 @@ const Square = ({ contributions = 0, dayOfYear = 0, squareNumber = 0 }: Props) =
       background = '#1f1f1f';
     }
 
+    if (isSecondMonday) {
+      margin = '8px 8px 8px 32px';
+    }
+
     return {
       background,
       border,
+      margin,
     };
   })();
 
   if (isPast) {
     return <div
       style={{
+        ...css,
         background: 'transparent',
-        border,
         borderRadius: '30%',
         display: 'flex',
         height: '35px',
-        margin: '8px',
+
         width: '35px',
       }}
     />;
@@ -62,12 +76,10 @@ const Square = ({ contributions = 0, dayOfYear = 0, squareNumber = 0 }: Props) =
   return (
     <div
       style={{
-        background,
-        border,
+        ...css,
         borderRadius: '30%',
         display: 'flex',
         height: '35px',
-        margin: '8px',
         width: '35px',
       }}
     />
