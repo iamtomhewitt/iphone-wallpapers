@@ -31,22 +31,22 @@ export const handler = withErrorHandling(
 
     return {
       body: Buffer.from(arrayBuffer).toString('base64'),
-      isBase64Encoded: true,
-      statusCode: 200,
       headers: {
         'Content-Type': 'image/png',
       },
+      isBase64Encoded: true,
+      statusCode: 200,
     };
   }, (err, code) => {
     console.log({
-      err,
       code,
+      err,
     });
     return http.response.json(code, {
-      message: `${err.name}: ${err.message}`,
       body: {
         error: `${err}`,
       },
+      message: `${err.name}: ${err.message}`,
     });
   },
 );

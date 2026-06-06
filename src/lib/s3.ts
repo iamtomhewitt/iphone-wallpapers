@@ -14,7 +14,6 @@ const client = new S3Client({
 });
 
 export default {
-  send: client.send,
   getObjectAsJson: async (bucket: string, key: string) => {
     const response = await client.send(
       new GetObjectCommand({
@@ -25,13 +24,6 @@ export default {
 
     const contents = await response.Body?.transformToString() ?? '{}';
     return JSON.parse(contents);
-  },
-  save: async (bucket: string, key: string, data: any) => {
-    return await client.send(new PutObjectCommand({
-      Body: data,
-      Bucket: bucket,
-      Key: key,
-    }));
   },
   itemExists: async (bucket: string, key: string) => {
     return await client
@@ -47,4 +39,12 @@ export default {
         throw err;
       });
   },
+  save: async (bucket: string, key: string, data: any) => {
+    return await client.send(new PutObjectCommand({
+      Body: data,
+      Bucket: bucket,
+      Key: key,
+    }));
+  },
+  send: client.send,
 };

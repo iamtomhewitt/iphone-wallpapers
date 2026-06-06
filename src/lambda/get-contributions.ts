@@ -77,19 +77,19 @@ export const handler = withErrorHandling(
             }
           }`,
         variables: {
-          username,
           from,
           to,
+          username,
         },
       };
 
       const response = await fetch('https://api.github.com/graphql', {
-        method: 'POST',
+        body: JSON.stringify(body),
         headers: {
           Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        method: 'POST',
       });
 
       const contributions: any = {};
@@ -131,8 +131,8 @@ export const handler = withErrorHandling(
   },
   (err, code) => {
     console.log({
-      err,
       code,
+      err,
     });
     throw new Error(`Could not get contributions - ${err} | ${code}`);
   },

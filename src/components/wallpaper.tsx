@@ -64,9 +64,9 @@ const Wallpaper = ({ contributions, timeData }: Props) => {
         ))}
 
         <div style={{
-          margin: 'auto',
-          fontSize: '30px',
           display: 'flex',
+          fontSize: '30px',
+          margin: 'auto',
         }}>
           <span style={{
             color: '#FF6B36',
@@ -76,10 +76,10 @@ const Wallpaper = ({ contributions, timeData }: Props) => {
         </div>
 
         <div style={{
-          margin: 'auto',
           color: '#6d6d6d',
-          fontSize: '20px',
           display: 'flex',
+          fontSize: '20px',
+          margin: 'auto',
         }}>
           Generated at {timeData.datetime.substring(11, 16)}
         </div>
