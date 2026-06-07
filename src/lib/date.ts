@@ -26,7 +26,7 @@ export const dayKeyToNumber = (key: DayKey) => {
 };
 
 export const dayNumberToDate = (dayNumber: number) => {
-  const [day, month, year] = dayOfYearToDate(dayNumber).toLocaleDateString().split('/');
+  const [month, day, year] = dayOfYearToDate(dayNumber).toLocaleDateString().split('/');
   return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
 };
 
