@@ -41,6 +41,28 @@ const Wallpaper = ({ contributions, timeData }: Props) => {
         flexDirection: 'column',
         marginTop: '250px',
       }}>
+        <div style={{
+          display: 'flex',
+          fontSize: '30px',
+          margin: 'auto',
+        }}>
+          <span style={{
+            color: '#FF6B36',
+          }}>
+            {`${daysRemaining}`} days left of {new Date().getFullYear()}
+          </span>
+        </div>
+
+        <div style={{
+          color: '#6d6d6d',
+          display: 'flex',
+          fontSize: '20px',
+          margin: 'auto',
+          marginBottom: '30px',
+        }}>
+          Generated at {timeData.datetime.substring(11, 16)}
+        </div>
+
         {grid.map((row, i) => (
           <div
             key={i}
@@ -63,26 +85,6 @@ const Wallpaper = ({ contributions, timeData }: Props) => {
           </div>
         ))}
 
-        <div style={{
-          display: 'flex',
-          fontSize: '30px',
-          margin: 'auto',
-        }}>
-          <span style={{
-            color: '#FF6B36',
-          }}>
-            {`${daysRemaining}`} days left of {new Date().getFullYear()}
-          </span>
-        </div>
-
-        <div style={{
-          color: '#6d6d6d',
-          display: 'flex',
-          fontSize: '20px',
-          margin: 'auto',
-        }}>
-          Generated at {timeData.datetime.substring(11, 16)}
-        </div>
       </div>
     </div>
   );
