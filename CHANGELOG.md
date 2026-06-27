@@ -1,3 +1,9 @@
+## Version 2.1.1
+Released **27th Jun 2026 07:58:28pm** - *3 commits*
+- 31f93d8 docs: update README
+- 316e172 style: move generated at text to the top so it is not blocked by iphone notifications
+- c45535e fix: fix date parsing
+
 ## Version 2.1.0
 Released **6th Jun 2026 04:18:50pm** - *2 commits*
 - 4d45749 style: split into two columns to show weeks
@@ -42,4 +48,4 @@ Released **24th May 2026 08:04:21pm** - *26 commits*
 - a79d1bb first pass as a lambda
 - 1d4761f chore: .gitignore
 
-    
+     
