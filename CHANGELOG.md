@@ -1,3 +1,7 @@
+## Version 2.2.0
+Released **12th Jul 2026 08:46:16pm** - *1 commits*
+- 29a1d93 chore: faster and more accurate contribution fetching
+
 ## Version 2.1.1
 Released **27th Jun 2026 07:58:28pm** - *3 commits*
 - 31f93d8 docs: update README
@@ -48,4 +52,4 @@ Released **24th May 2026 08:04:21pm** - *26 commits*
 - a79d1bb first pass as a lambda
 - 1d4761f chore: .gitignore
 
-     
+      
