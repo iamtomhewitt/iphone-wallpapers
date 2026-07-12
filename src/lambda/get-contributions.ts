@@ -1,59 +1,54 @@
 import { withErrorHandling } from '@iamtomhewitt/error';
 
 import s3 from '../lib/s3';
-import { merge } from '../lib/object';
 
 export const handler = withErrorHandling(
   async () => {
     const now = new Date();
 
     const getGitlabContributions = async (username: string) => {
-      const perPage = 100;
-      const after = new Date();
-      after.setDate(after.getDate() - 7);
-      after.setHours(0, 0, 0);
+      const fetchByPage = async (page = 1) => {
+        const params = new URLSearchParams({
+          after: new Date(now.getFullYear(), 0, 1, 0, 0, 0).toISOString(),
+          page: `${page}`,
+          per_page: '100',
+        });
 
-      let page = 1;
-      let all: any[] = [];
-
-      while (true) {
-        const queryParametersString = Object.entries({
-          after: after.toISOString(),
-        })
-          .map(([key, value]) => `${key}=${value}`)
-          .join('&');
-
-        const url = `https://gitlab.com/api/v4/users/${username}/events?${queryParametersString}&per_page=${perPage}&page=${page}`;
-        const data = await fetch(url, {
+        const response = await fetch(`https://gitlab.com/api/v4/users/${username}/events?${params}`, {
           headers: {
             'PRIVATE-TOKEN': process.env.GITLAB_TOKEN,
           },
-        })
-          .then(x => x.json()) as any[];
+        });
 
-        console.log('Page', page, 'has', data.length, 'events');
+        const events = await response.json() as any[];
+        const totalPages = Number(response.headers.get('x-total-pages') || 1);
 
-        all = all.concat(data);
+        return {
+          events: events.map(e => ({
+            action: e.action_name,
+            createdAt: e.created_at.split('T')[0],
+          })),
+          totalPages,
+        };
+      };
 
-        if (data.length < perPage) {
-          break;
-        }
+      const { totalPages } = await fetchByPage(1);
 
-        page += 1;
-      }
-
-      return all.reduce((acc, event) => {
-        const date = event.created_at.split('T')[0];
-        acc[date] = (acc[date] || 0) + 1;
-        return acc;
-      }, {});
+      return await Promise.all(
+        Array.from({
+          length: totalPages,
+        }, (_, i) => fetchByPage(i),
+        ))
+        .then(items => items.map(item => item.events))
+        .then(items => items.flat())
+        .then(items => items.filter(item => !['left'].includes(item.action)))
+        .then(items => items.reduce((acc: any, { createdAt }) => {
+          acc[createdAt] = (acc[createdAt] ?? 0) + 1;
+          return acc;
+        }, {}));
     };
 
     const getGithubContributions = async (username: string) => {
-      const now = new Date();
-      const from = new Date(now.getFullYear(), 0, 1).toISOString();
-      const to = now.toISOString();
-
       const body = {
         query: `
           query($username: String!, $from: DateTime!, $to: DateTime!) {
@@ -61,10 +56,8 @@ export const handler = withErrorHandling(
               name
               contributionsCollection(from: $from, to: $to) {
                 contributionCalendar {
-                  colors
                   totalContributions
                   weeks {
-                    firstDay
                     contributionDays {
                       color
                       contributionCount
@@ -77,8 +70,8 @@ export const handler = withErrorHandling(
             }
           }`,
         variables: {
-          from,
-          to,
+          from: new Date(now.getFullYear(), 0, 1, 0, 0, 0).toISOString(),
+          to: now.toISOString(),
           username,
         },
       };
@@ -86,14 +79,15 @@ export const handler = withErrorHandling(
       const response = await fetch('https://api.github.com/graphql', {
         body: JSON.stringify(body),
         headers: {
-          Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
           'Content-Type': 'application/json',
         },
         method: 'POST',
       });
 
-      const contributions: any = {};
+      const contributions: Record<string, number> = {};
       const json = await response.json() as any;
+
       const { weeks = [] } = json.data.user.contributionsCollection.contributionCalendar;
 
       for (const week of weeks) {
@@ -105,26 +99,11 @@ export const handler = withErrorHandling(
       return contributions;
     };
 
-    const getContributions = async (type: 'github' | 'gitlab', username: string) => {
-      const current = await s3.getObjectAsJson('iphone-wallpapers-data', `${type}-contributions`);
-      console.log('There are', Object.keys(current).length, 'items for current', type, 'contributions');
+    const githubContributions = await getGithubContributions('iamtomhewitt');
+    const gitlabContributions = await getGitlabContributions('thewitt_wh');
 
-      const fetched = type === 'github' ?
-        await getGithubContributions(username) :
-        await getGitlabContributions(username);
-      console.log('Found', Object.keys(fetched).length, 'items from', type, 'API');
-
-      const merged = merge(current, fetched);
-      console.log('Merged into', Object.keys(merged).length, 'items for', type, 'to S3');
-
-      return merged;
-    };
-
-    const newGithubContributions = await getContributions('github', 'iamtomhewitt');
-    const newGitlabContributions = await getContributions('gitlab', 'thewitt_wh');
-
-    await s3.save('iphone-wallpapers-data', 'github-contributions', JSON.stringify(newGithubContributions));
-    await s3.save('iphone-wallpapers-data', 'gitlab-contributions', JSON.stringify(newGitlabContributions));
+    await s3.save('iphone-wallpapers-data', 'github-contributions', JSON.stringify(githubContributions));
+    await s3.save('iphone-wallpapers-data', 'gitlab-contributions', JSON.stringify(gitlabContributions));
 
     const seconds = (new Date().getTime() - now.getTime()) / 1000;
     console.log(`Contributions saved in ${seconds} seconds`);
