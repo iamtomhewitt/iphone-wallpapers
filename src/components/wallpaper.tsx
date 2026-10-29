@@ -1,7 +1,7 @@
 import Square from './square';
 import { dayKeyToNumber, dayNumberToDate, getFirstDayOfYear, getTotalDaysInCurrentYear } from '../lib/date';
 
-const Wallpaper = ({ contributions, timeData }: Props) => {
+const Wallpaper = ({ contributions, timeData, totalContributions }: Props) => {
   const numberOfDaysThisYear = getTotalDaysInCurrentYear();
   const dayOfYear = timeData.day_of_year;
   const numberOfDaysBeforeYearStarts = dayKeyToNumber(getFirstDayOfYear());
@@ -43,13 +43,25 @@ const Wallpaper = ({ contributions, timeData }: Props) => {
       }}>
         <div style={{
           display: 'flex',
-          fontSize: '30px',
+          fontSize: '32px',
           margin: 'auto',
         }}>
           <span style={{
             color: '#FF6B36',
           }}>
             {`${daysRemaining}`} days left of {new Date().getFullYear()}
+          </span>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          fontSize: '24px',
+          margin: 'auto',
+        }}>
+          <span style={{
+            color: '#FF6B36',
+          }}>
+            {`${totalContributions}`} total contributions
           </span>
         </div>
 
@@ -109,6 +121,7 @@ type Props = {
     utc_offset: string;
     week_number: number;
   };
+  totalContributions: string;
 }
 
 export default Wallpaper;

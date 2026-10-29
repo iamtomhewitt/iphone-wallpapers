@@ -20,9 +20,13 @@ export const handler = withErrorHandling(
     const gitlabContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'gitlab-contributions');
     const githubContributions = await s3.getObjectAsJson('iphone-wallpapers-data', 'github-contributions');
     const mergedContributions = merge(gitlabContributions, githubContributions);
+    const totalContributions = Object.values(mergedContributions)
+      .reduce((sum, a) => sum + a, 0)
+      .toString()
+      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
     const timeData = await getTimeData();
 
-    const res = new ImageResponse(<Wallpaper timeData={timeData} contributions={mergedContributions} />, imageOptions);
+    const res = new ImageResponse(<Wallpaper timeData={timeData} contributions={mergedContributions} totalContributions={totalContributions} />, imageOptions);
     const arrayBuffer = await res.arrayBuffer();
 
     if (process.env.USER && process.env.USER === 'thewitt') {
