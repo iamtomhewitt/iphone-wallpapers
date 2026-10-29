@@ -21,28 +21,28 @@ const Square = ({ contributions = 0, dayOfYear = 0, squareNumber = 0 }: Props) =
     let margin = '8px';
 
     if (contributions > 50) {
-      background = '#D2DCFF';
+      background = '#56D364';
     }
     else if (contributions > 40) {
-      background = '#7992F5';
+      background = '#2FA043';
     }
     else if (contributions > 30) {
-      background = '#4E65CD';
+      background = '#196C2E';
     }
     else if (contributions > 20) {
-      background = '#303570';
+      background = '#033A17';
     }
     else if (contributions > 0) {
-      background = '#312e3e';
+      background = '#012e12';
     }
 
     if (isBirthday) {
-      border = '6px solid #FF6B36';
-      background = '#FF6B36';
+      border = '6px solid #1F6FEB';
+      background = '#1F6FEB';
     }
     else if (isToday) {
-      border = '2px solid #5cb85c';
-      background = '#5cb85c';
+      border = '6px solid #1F6FEB';
+      background = '#28272D';
     }
     else if (isFuture) {
       background = '#1f1f1f';
@@ -67,7 +67,6 @@ const Square = ({ contributions = 0, dayOfYear = 0, squareNumber = 0 }: Props) =
         borderRadius: '30%',
         display: 'flex',
         height: '35px',
-
         width: '35px',
       }}
     />;

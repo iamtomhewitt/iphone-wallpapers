@@ -47,7 +47,7 @@ const Wallpaper = ({ contributions, timeData, totalContributions }: Props) => {
           margin: 'auto',
         }}>
           <span style={{
-            color: '#FF6B36',
+            color: '#2FA043',
           }}>
             {`${daysRemaining}`} days left of {new Date().getFullYear()}
           </span>
@@ -59,7 +59,7 @@ const Wallpaper = ({ contributions, timeData, totalContributions }: Props) => {
           margin: 'auto',
         }}>
           <span style={{
-            color: '#FF6B36',
+            color: '#2FA043',
           }}>
             {`${totalContributions}`} total contributions
           </span>
