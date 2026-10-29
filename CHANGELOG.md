@@ -1,3 +1,8 @@
+## Version 3.0.0
+Released **29th Oct 2026 10:11:03pm** - *2 commits*
+- 4623f46 feat: show total contributions
+- 23dee71 chore: update lambda schedule
+
 ## Version 2.2.0
 Released **12th Jul 2026 08:46:16pm** - *1 commits*
 - 29a1d93 chore: faster and more accurate contribution fetching
@@ -52,4 +57,4 @@ Released **24th May 2026 08:04:21pm** - *26 commits*
 - a79d1bb first pass as a lambda
 - 1d4761f chore: .gitignore
 
-      
+       
